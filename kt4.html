@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS DOM | КТ №4</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="main.js" defer></script>
+</head>
+<body>
+    <div class="range">
+        <div class="sliderValue">
+            <span>100</span>
+        </div>
+        <div class="field">
+            <div class="value left">0</div>
+            <input type="range" min="0" max="100" value="0" step="1">
+            <div class="value right">100</div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+const slideValue = document.querySelector("span");
+const inputSlider = document.querySelector("input");
+
+inputSlider.oninput = () => {
+    const value = inputSlider.value;
+    const max = inputSlider.max;
+    const sliderWidth = inputSlider.offsetWidth;
+    const thumbWidth = 2;
+
+    const percent = value / max;
+    let offset = percent * (sliderWidth - thumbWidth) / 2;
+    offset = Math.max(0, Math.min(offset, sliderWidth - thumbWidth));
+
+    slideValue.textContent = value;
+    slideValue.style.left = offset + "px";
+    slideValue.classList.add("show");
+
+    inputSlider.style.background = `linear-gradient(to right, #ff804a ${percent * 100}%, #ddd ${percent * 100}%)`;
+};
+
+inputSlider.onblur = () => {
+    slideValue.classList.remove("show");
+};
+
+</script>
+<style>
+    
+html, body {
+    display: grid;
+    height: 100%;
+    text-align: center;
+    place-items: center;
+    background-color: #efeded;
+}
+
+.range {
+    height: 200px;
+    width: 900px;
+    background: #efeded;
+    display: grid;
+    place-items: center;
+}
+
+.sliderValue {
+    position: relative;
+    width: 19%;
+}
+
+.sliderValue span {
+    position: absolute;
+    height: 10px;
+    width: 40px;
+    color: #132481;
+    top: -20px;
+    transform-origin: bottom;
+    line-height: 120px;
+    z-index: 2;
+}
+
+.sliderValue span:after {
+    position: absolute;
+    height: 100%;
+    width: 120%;
+    background: #83c9e7;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    border: 3px solid #83c9e7;
+    z-index: -1;
+    border-radius: 50%;}
+
+.field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.field .value {
+    font-size: 20px;
+    font-weight: 1100;
+    color: #132481;
+}
+
+.range input {
+    appearance: none;
+    height: 3px;
+    width: 200%;
+    background: #83c9e7;
+    border-radius: 5px;
+    outline: none;
+}
+
+.range input::-webkit-slider-thumb {
+    appearance: none;
+    height: 20px;
+    width: 20px;
+    background: #132481;
+    border-radius: 100%;
+    border: 1px solid #132481;
+    cursor: pointer;
+}
+</style>
